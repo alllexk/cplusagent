@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C+ Агент — регистрация и онлайн-консультация</title>
+  <meta name="description" content="C+ Агент — веб-приложение с регистрацией по e-mail и встроенным ИИ-консультантом. Стиль КонсультантПлюс.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Шапка ===== -->
+  <header class="header">
+    <div class="header__inner">
+      <a class="logo" href="#top" aria-label="C+ Агент — на главную">
+        <span class="logo__mark">C+</span>
+        <span class="logo__text">Агент</span>
+      </a>
+      <nav class="nav" aria-label="Основная навигация">
+        <a class="nav__link" href="#top">Главная</a>
+        <a class="nav__link" href="#auth">Вход / Регистрация</a>
+        <a class="nav__link" href="#chat">Консультация</a>
+      </nav>
+      <div class="header__actions">
+        <button class="btn btn--ghost" id="btnLoginTop" type="button">Вход</button>
+        <button class="btn btn--primary" id="btnRegisterTop" type="button">Регистрация</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" id="top">
+    <div class="hero__inner">
+      <h1 class="hero__title">Онлайн-консультации<br>с ИИ-агентом</h1>
+      <p class="hero__subtitle">Зарегистрируйтесь по e-mail, чтобы получить доступ к персональному консультанту. Быстро, удобно и бесплатно.</p>
+      <div class="hero__actions">
+        <button class="btn btn--primary btn--lg" type="button" data-goto="auth">Создать аккаунт</button>
+        <button class="btn btn--outline btn--lg" type="button" data-goto="chat">Начать консультацию</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Основной контент ===== -->
+  <main class="main">
+    <div class="container">
+
+      <!-- Уведомление об ошибке/сообщении -->
+      <div class="notice" id="notice" hidden></div>
+
+      <!-- Регистрация / Вход -->
+      <section class="card auth" id="auth">
+        <div class="auth__tabs" role="tablist">
+          <button class="auth__tab is-active" id="tabLogin" type="button" role="tab">Вход</button>
+          <button class="auth__tab" id="tabRegister" type="button" role="tab">Регистрация</button>
+        </div>
+
+        <!-- Вход -->
+        <form class="auth__form" id="formLogin" novalidate>
+          <div class="field">
+            <label class="field__label" for="loginEmail">E-mail</label>
+            <input class="field__input" type="email" id="loginEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label class="field__label" for="loginPassword">Пароль</label>
+            <input class="field__input" type="password" id="loginPassword" name="password" placeholder="••••••••" autocomplete="current-password" required>
+          </div>
+          <button class="btn btn--primary btn--block" type="submit">Войти</button>
+          <p class="auth__hint">Нет аккаунта? <a href="#" data-switch="register">Зарегистрируйтесь</a></p>
+        </form>
+
+        <!-- Регистрация -->
+        <form class="auth__form" id="formRegister" novalidate hidden>
+          <div class="field">
+            <label class="field__label" for="regName">Имя</label>
+            <input class="field__input" type="text" id="regName" name="name" placeholder="Иван Иванов" autocomplete="name">
+          </div>
+          <div class="field">
+            <label class="field__label" for="regEmail">E-mail</label>
+            <input class="field__input" type="email" id="regEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label class="field__label" for="regPassword">Пароль</label>
+            <input class="field__input" type="password" id="regPassword" name="password" placeholder="Минимум 6 символов" autocomplete="new-password" required minlength="6">
+          </div>
+          <button class="btn btn--primary btn--block" type="submit">Зарегистрироваться</button>
+          <p class="auth__hint">Уже есть аккаунт? <a href="#" data-switch="login">Войдите</a></p>
+        </form>
+
+        <!-- Демо-вход (показывается только в демо-режиме, без настроенного Supabase) -->
+        <div class="auth__demo" id="demoLogin" hidden>
+          <div class="auth__demo-divider">или</div>
+          <p class="auth__demo-text">Чтобы открыть чат без настройки Supabase, войдите в демо-режиме.</p>
+          <button class="btn btn--outline btn--block" id="btnDemoLogin" type="button">Войти в демо</button>
+        </div>
+      </section>
+
+      <!-- Профиль (виден после входа) -->
+      <section class="card profile" id="profile" hidden>
+        <div class="profile__head">
+          <div class="profile__avatar" id="profileAvatar">?</div>
+          <div class="profile__info">
+            <h2 class="profile__name" id="profileName">Пользователь</h2>
+            <p class="profile__email" id="profileEmail">—</p>
+          </div>
+        </div>
+        <p class="profile__text">Вы успешно вошли в систему. Теперь вы можете задать вопрос ИИ-консультанту в разделе ниже.</p>
+        <div class="profile__actions">
+          <button class="btn btn--outline" id="btnLogout" type="button">Выйти</button>
+          <button class="btn btn--primary" type="button" data-goto="chat">Перейти к консультации</button>
+        </div>
+      </section>
+
+      <!-- Чат -->
+      <section class="card chat" id="chat">
+        <div class="chat__head">
+          <h2 class="chat__title">Онлайн-консультация</h2>
+          <p class="chat__desc">Задайте вопрос — ИИ-агент ответит в чате. Консультация встроена в страницу и занимает всё свободное пространство.</p>
+        </div>
+        <!-- Заблокировано до входа -->
+        <div class="chat__locked" id="chatLocked">
+          <div class="chat__locked-icon">🔒</div>
+          <h3 class="chat__locked-title">Консультация доступна после входа</h3>
+          <p class="chat__locked-text">Зарегистрируйтесь или войдите по e-mail, чтобы задать вопрос ИИ-консультанту.</p>
+          <button class="btn btn--primary" id="btnChatUnlock" type="button">Войти / Зарегистрироваться</button>
+        </div>
+        <div class="chat__embed" id="chatEmbed" hidden>
+          <div class="chat__fallback" id="chatFallback" hidden>Не удалось загрузить чат. Проверьте подключение к интернету и обновите страницу.</div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===== Подвал ===== -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <span class="logo__mark logo__mark--footer">C+</span>
+        <span class="footer__brand-text">C+ Агент</span>
+      </div>
+      <nav class="footer__nav" aria-label="Навигация в подвале">
+        <a href="#top">Главная</a>
+        <a href="#auth">Регистрация</a>
+        <a href="#chat">Консультация</a>
+      </nav>
+      <p class="footer__copy">© 2026 C+ Агент. Все права защищены.</p>
+    </div>
+  </footer>
+
+  <!-- Служебная плашка о том, что чат-модуль загружается -->
+  <noscript>
+    <div style="padding:16px;text-align:center;background:#ffe4a3;color:#000;">Для работы приложения включите JavaScript.</div>
+  </noscript>
+
+  <!-- Конфигурация Supabase (заполняется перед публикацией) -->
+  <script src="js/config.js"></script>
+  <!-- Логика приложения (включая загрузку и встраивание чат-виджета) -->
+  <script src="js/app.js"></script>
+</body>
+</html>
