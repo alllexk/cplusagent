@@ -309,13 +309,31 @@
     textColor: "#2e2e2e"
   };
 
+  var chatScriptLoading = false;
+  var chatScriptReady = false;
+  var chatScriptCallbacks = [];
+
   function loadChatScript(cb) {
-    if (window.customElements && window.customElements.get("agent-chat-widget")) { cb(); return; }
+    if (chatScriptReady || (window.customElements && window.customElements.get("agent-chat-widget"))) {
+      chatScriptReady = true;
+      cb();
+      return;
+    }
+    chatScriptCallbacks.push(cb);
+    if (chatScriptLoading) return;
+    chatScriptLoading = true;
     var s = document.createElement("script");
     s.src = CHAT_SCRIPT;
     s.async = true;
-    s.onload = cb;
+    s.onload = function () {
+      chatScriptLoading = false;
+      chatScriptReady = true;
+      var cbs = chatScriptCallbacks.splice(0);
+      cbs.forEach(function (f) { f(); });
+    };
     s.onerror = function () {
+      chatScriptLoading = false;
+      chatScriptCallbacks = [];
       var fb = $("chatFallback");
       if (fb) fb.hidden = false;
     };
@@ -355,9 +373,11 @@
   var widget = null;
 
   function createChatWidget() {
+    if (widget) return;
     loadChatScript(function () {
       // Убираем placeholder, если он был показан при ошибке ранее
       if (chatFallback) chatFallback.hidden = true;
+      if (widget) return;
       var w = document.createElement("agent-chat-widget");
       w.setAttribute("data-agent-access-id", CHAT_CONFIG.agentAccessId);
       w.setAttribute("data-wsurl", CHAT_CONFIG.wsUrl);
