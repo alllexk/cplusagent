@@ -4,14 +4,21 @@
  * 1. Создайте проект на https://supabase.com (бесплатный план подойдёт).
  * 2. В панели проекта откройте Settings → API.
  * 3. Скопируйте:
- *      - Project URL  -> SUPABASE_URL
- *      - anon public  -> SUPABASE_ANON_KEY
+ *      - Project URL  -> url
+ *      - anon public  -> anonKey
  * 4. В разделе Authentication → Providers убедитесь, что включён Email.
- * 5. В Authentication → URL Configuration укажите адрес вашего сайта,
- *    например https://username.github.io.
+ * 5. В Authentication → URL Configuration обязательно укажите:
+ *      - Site URL:      https://<user>.github.io/<repo>/
+ *      - Redirect URLs: https://<user>.github.io/<repo>/**
+ *    Без этого ссылки подтверждения e-mail и восстановления пароля будут
+ *    вести на Site URL, а страницы login.html/chat.html не откроются.
+ *
+ * Скрипты подключения (js/auth.js) сами загружают клиент Supabase с CDN,
+ * поэтому дополнительных библиотек в репозиторий класть не нужно.
  *
  * Если оставить поля пустыми, приложение запустится в «демо-режиме»:
- * чат будет доступен, а регистрация покажет подсказку о настройке.
+ * на странице входа появится кнопка демо-входа, а регистрация покажет
+ * подсказку о настройке ключей.
  */
 window.SUPABASE_CONFIG = {
   url: "https://ueciixgejilrtdhruyej.supabase.co",

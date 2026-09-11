@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход в аккаунт — C+ Агент</title>
+  <meta name="description" content="Вход в C+ Агент по e-mail. Авторизуйтесь, чтобы открыть онлайн-консультацию с ИИ-агентом.">
+  <link rel="icon" href="favicon.svg?v=8" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css?v=8">
+</head>
+<body class="auth-pending" data-page="login">
+  <noscript>
+    <style>.header__auth, .js-auth-gated { visibility: visible !important; }</style>
+    <p style="padding:16px;text-align:center;background:#ffe4a3;color:#000;">Для работы приложения включите JavaScript.</p>
+  </noscript>
+
+  <!-- ===== Шапка ===== -->
+  <header class="header">
+    <div class="header__inner">
+      <a class="logo" href="index.html" aria-label="C+ Агент — на главную">
+        <span class="logo__mark">C+</span>
+        <span class="logo__text">Агент</span>
+      </a>
+      <nav class="nav" aria-label="Основная навигация">
+        <a class="nav__link" href="index.html">Главная</a>
+        <a class="nav__link" href="chat.html">Консультация</a>
+        <a class="nav__link" href="index.html#about">О сервисе</a>
+      </nav>
+      <div class="header__auth" id="authArea">
+        <a class="btn btn--ghost" href="login.html">Вход</a>
+        <a class="btn btn--primary" href="register.html">Регистрация</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Заголовок страницы ===== -->
+  <section class="page-head">
+    <div class="page-head__inner">
+      <h1 class="page-head__title">Вход в аккаунт</h1>
+      <p class="page-head__text">Авторизуйтесь, чтобы открыть персональную онлайн-консультацию с ИИ-агентом.</p>
+    </div>
+  </section>
+
+  <!-- ===== Основной контент ===== -->
+  <main class="main">
+    <div class="container">
+
+      <div class="notice" id="notice" hidden></div>
+
+      <section class="card auth js-auth-gated">
+        <form class="auth__form" id="formLogin" novalidate>
+          <div class="field">
+            <label class="field__label" for="loginEmail">E-mail</label>
+            <input class="field__input" type="email" id="loginEmail" name="email" placeholder="you@example.com" autocomplete="email" required>
+            <p class="field__error">Укажите корректный e-mail.</p>
+          </div>
+          <div class="field">
+            <label class="field__label" for="loginPassword">Пароль</label>
+            <input class="field__input" type="password" id="loginPassword" name="password" placeholder="••••••••" autocomplete="current-password" required>
+            <p class="field__error">Введите пароль.</p>
+          </div>
+          <p class="auth__forgot"><a href="forgot-password.html">Забыли пароль?</a></p>
+          <button class="btn btn--primary btn--block" type="submit">Войти</button>
+        </form>
+
+        <p class="auth__hint">Нет аккаунта? <a href="register.html">Зарегистрируйтесь</a></p>
+
+        <!-- Демо-вход: показывается только когда Supabase не настроен -->
+        <div class="auth__demo" id="demoLogin" hidden>
+          <div class="auth__demo-divider">или</div>
+          <p class="auth__demo-text">Чтобы открыть чат без настройки Supabase, войдите в демо-режиме.</p>
+          <button class="btn btn--outline btn--block" id="btnDemoLogin" type="button">Войти в демо</button>
+        </div>
+
+        <p class="auth__links">
+          <a href="index.html">На главную</a>
+          <a href="chat.html">Перейти к консультации</a>
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===== Подвал ===== -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <span class="logo__mark logo__mark--footer">C+</span>
+        <span class="footer__brand-text">C+ Агент</span>
+      </div>
+      <nav class="footer__nav" aria-label="Навигация в подвале">
+        <a href="index.html">Главная</a>
+        <a href="chat.html">Консультация</a>
+        <a href="login.html">Вход</a>
+        <a href="register.html">Регистрация</a>
+        <a href="forgot-password.html">Восстановление пароля</a>
+      </nav>
+      <p class="footer__copy">© 2026 C+ Агент. Все права защищены.</p>
+    </div>
+  </footer>
+
+  <script src="js/config.js?v=8"></script>
+  <script src="js/auth.js?v=8"></script>
+  <script src="js/app.js?v=8"></script>
+</body>
+</html>
