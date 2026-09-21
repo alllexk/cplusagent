@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Онлайн-консультация — C+ Агент</title>
   <meta name="description" content="Онлайн-консультация с ИИ-агентом C+ Агент. Чат доступен после входа в аккаунт.">
-  <link rel="icon" href="favicon.svg?v=8" type="image/svg+xml">
-  <link rel="stylesheet" href="css/style.css?v=8">
+  <link rel="icon" href="favicon.svg?v=9" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css?v=9">
 </head>
 <body class="auth-pending" data-page="chat">
   <noscript>
@@ -37,7 +37,7 @@
   <section class="page-head">
     <div class="page-head__inner">
       <h1 class="page-head__title">Онлайн-консультация</h1>
-      <p class="page-head__text">Задайте вопрос — ИИ-агент ответит прямо на этой странице. Консультация доступна после входа в аккаунт.</p>
+      <p class="page-head__text">Задайте вопрос голосом или текстом — ИИ-агент ответит вслух, а текст ответа откроется в чате после прочтения. Консультация доступна после входа в аккаунт.</p>
     </div>
   </section>
 
@@ -59,9 +59,46 @@
           </div>
         </div>
 
-        <!-- Чат -->
+        <!-- Голосовой чат -->
         <div class="chat__embed" id="chatEmbed" hidden>
-          <div class="chat__fallback" id="chatFallback" hidden>Не удалось загрузить чат. Проверьте подключение к интернету и обновите страницу.</div>
+          <div class="vchat" id="vchat">
+            <div class="vchat__bar">
+              <span class="vchat__status">
+                <span class="vchat__status-dot" aria-hidden="true"></span>
+                <span id="vchatStatusText" role="status" aria-live="polite">Готов к диалогу</span>
+              </span>
+              <div class="vchat__tools">
+                <button class="btn btn--outline btn--sm" type="button" id="vchatStop" hidden>Остановить и показать текст</button>
+                <button class="btn btn--ghost btn--sm" type="button" id="vchatNew">Новый диалог</button>
+                <button class="btn btn--ghost btn--sm" type="button" id="vchatTokenBtn" aria-expanded="false" aria-controls="vchatTokenForm">API-токен</button>
+              </div>
+            </div>
+
+            <form class="vchat__token" id="vchatTokenForm" hidden>
+              <label class="vchat__token-label" for="vchatTokenInput">API-токен агента</label>
+              <p class="vchat__token-hint">Ключ из панели Timeweb Cloud: <b>Агенты → Управление → Доступ по API</b>. Токен хранится только в этом браузере и отправляется только на agent.timeweb.cloud.</p>
+              <div class="vchat__token-row">
+                <input class="vchat__token-input" id="vchatTokenInput" type="password" placeholder="Вставьте токен" autocomplete="off" spellcheck="false">
+                <button class="btn btn--primary btn--sm" type="submit" id="vchatTokenSave">Сохранить</button>
+                <button class="btn btn--outline btn--sm" type="button" id="vchatTokenClear">Удалить</button>
+              </div>
+              <p class="vchat__token-msg" id="vchatTokenMsg" hidden></p>
+            </form>
+
+            <div class="vchat__log" id="vchatLog" role="log" aria-live="polite" aria-label="Диалог с агентом">
+              <div class="vchat__hint" id="vchatHint">Нажмите «Голосом», задайте вопрос — агент ответит вслух, а текст ответа будет открываться на экране по мере прочтения.</div>
+            </div>
+
+            <form class="vchat__composer" id="vchatComposer">
+              <button class="vchat__mic" type="button" id="vchatMic" aria-pressed="false" title="Задать вопрос голосом">
+                <span class="vchat__mic-icon" aria-hidden="true">🎤</span>
+                <span class="vchat__mic-text">Голосом</span>
+              </button>
+              <input class="vchat__input" id="vchatInput" type="text" placeholder="Задайте вопрос…" autocomplete="off">
+              <button class="btn btn--primary" type="submit" id="vchatSend">Отправить</button>
+            </form>
+            <p class="vchat__note" id="vchatNote" hidden></p>
+          </div>
         </div>
       </section>
 
@@ -86,10 +123,10 @@
     </div>
   </footer>
 
-  <script src="js/config.js?v=8"></script>
-  <script src="js/auth.js?v=8"></script>
-  <!-- Встраивание чат-виджета Timeweb Cloud (только на этой странице) -->
-  <script src="js/chat.js?v=8"></script>
-  <script src="js/app.js?v=8"></script>
+  <script src="js/config.js?v=9"></script>
+  <script src="js/auth.js?v=9"></script>
+  <!-- Голосовой чат с ИИ-агентом Timeweb Cloud (только на этой странице) -->
+  <script src="js/voice-chat.js?v=9"></script>
+  <script src="js/app.js?v=9"></script>
 </body>
 </html>
