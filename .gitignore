@@ -3,3 +3,7 @@ Thumbs.db
 node_modules/
 *.log
 .env
+
+# Локальный конфиг и секреты (не коммитить)
+js/config.local.js
+.agent-token
